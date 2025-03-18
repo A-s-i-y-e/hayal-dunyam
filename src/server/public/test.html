@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API Test</title>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+      }
+      button {
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      #result {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Kullanıcı Kaydı Test</h2>
+    <div class="form-group">
+      <label>İsim:</label>
+      <input type="text" id="name" value="Test User" />
+    </div>
+    <div class="form-group">
+      <label>E-posta:</label>
+      <input type="email" id="email" value="test@example.com" />
+    </div>
+    <div class="form-group">
+      <label>Şifre:</label>
+      <input type="password" id="password" value="123456" />
+    </div>
+    <div class="form-group">
+      <label>Rol:</label>
+      <input type="text" id="role" value="user" />
+    </div>
+    <button onclick="register()">Kayıt Ol</button>
+    <div id="result"></div>
+
+    <script>
+      async function register() {
+        const data = {
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          password: document.getElementById("password").value,
+          role: document.getElementById("role").value,
+        };
+
+        try {
+          const response = await fetch(
+            "http://localhost:3003/api/users/register",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            }
+          );
+
+          const result = await response.json();
+          document.getElementById("result").textContent = JSON.stringify(
+            result,
+            null,
+            2
+          );
+        } catch (error) {
+          document.getElementById("result").textContent =
+            "Hata: " + error.message;
+        }
+      }
+    </script>
+  </body>
+</html>
